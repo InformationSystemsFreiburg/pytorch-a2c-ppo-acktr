@@ -66,3 +66,14 @@ class DiagGaussian(nn.Module):
 
         action_logstd = self.logstd(zeros)
         return FixedNormal(action_mean, action_logstd.exp())
+
+
+class MultiCategorical(nn.Module):
+    def __init__(self, num_inputs, num_outputs):
+        super(MultiCategorical, self).__init__()
+
+    def forward(self, x):
+        pass
+
+    # requires something like mode() and sample()
+    # they solve it by using standard torch Distributions.

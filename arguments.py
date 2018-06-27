@@ -63,11 +63,14 @@ def get_args():
                         help='disables visdom visualization')
     parser.add_argument('--port', type=int, default=8097,
                         help='port to run the server on (default: 8097)')
+    ## NG: custom arguments
     parser.add_argument('--number-of-workers', type=int, default=10,
                         help='number of maintenance workers tha agent can schedule in the maintenance env')
     parser.add_argument('--path-to-keras-expert-model', default='./custom_envs/pretrained_models/',
                         help='path to keras expert model that the worker uses to transform the original env '
                              'observation into a worker space')
+    parser.add_argument('--save-model-postfix', default='',
+                        help='add some string to the model name')
     args = parser.parse_args()
 
     args.cuda = not args.no_cuda and torch.cuda.is_available()

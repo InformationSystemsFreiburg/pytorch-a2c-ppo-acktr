@@ -181,8 +181,8 @@ def main():
 
             save_model = [save_model,
                             hasattr(envs, 'ob_rms') and envs.ob_rms or None]
-
-            torch.save(save_model, os.path.join(save_path, args.env_name + ".pt"))
+            model_name = "{}-{}-{}-{}.pt".format(args.env_name, args.algo, args.save_model_postfix, j)
+            torch.save(save_model, os.path.join(save_path, model_name))
 
         if j % args.log_interval == 0:
             end = time.time()
