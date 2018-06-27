@@ -141,8 +141,8 @@ def main():
             print("cpu_actions: {}".format(cpu_actions))
             # Obser reward and next obs
             obs, reward, done, info = envs.step(cpu_actions)
-            print("info stats reward: {}".format(info[0]["stats_absolute_reward_regret"]+info[0][
-                "stats_absolute_reward_penalty"]))
+            print("info stats reward: {}".format(info[0]["stats_relative_reward_regret"]+info[0][
+                "stats_relative_reward_penalty"]))
             print("envs reward: {}".format(reward))
             reward = torch.from_numpy(np.expand_dims(np.stack(reward), 1)).float()
             print("torch from numpy envs reward: {}".format(reward))
