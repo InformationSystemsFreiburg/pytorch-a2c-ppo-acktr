@@ -81,6 +81,10 @@ def main():
     obs_shape = (obs_shape[0] * args.num_stack, *obs_shape[1:])
 
     # Done: 2018/06/24. change Model in Policy to LSTM/GRU model (ref. CNN with gru); see model.py
+
+    print("####")
+    print("action space.n : {}".format(envs.action_space.n))
+    print("####")
     actor_critic = Policy(obs_shape, envs.action_space, args.recurrent_policy)
 
     if envs.action_space.__class__.__name__ == "Discrete":
