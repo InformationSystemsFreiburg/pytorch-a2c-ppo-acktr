@@ -16,7 +16,7 @@ from gym.spaces import Discrete, Box
 from gym.envs.registration import EnvSpec
 from gym import logger
 
-from gym_maintenance.envs.machines.machine_park_simple import MachineParkVecSimple
+from custom_envs.machines.machine_park_simple import MachineParkVecSimple
 
 ENV_CONFIG = dict(
     # general
