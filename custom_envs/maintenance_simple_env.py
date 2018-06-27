@@ -16,7 +16,7 @@ from gym.spaces import Discrete, Box
 from gym.envs.registration import EnvSpec
 from gym import logger
 
-from custom_envs.machines.machine_park_simple import MachineParkVecSimple
+from gym_maintenance.envs.machines.machine_park_simple import MachineParkVecSimple
 
 ENV_CONFIG = dict(
     # general
@@ -69,6 +69,9 @@ ENV_CONFIG = dict(
 
     # choose rul estimation
     rul_estimation_method='clipped',
+
+    # keras expert model for worker
+    path_to_keras_expert_model='./pretrained_models/model_f_wsupervisor_D3BND3BND3BND1_adam.h5',
 )
 
 
@@ -142,8 +145,8 @@ class WorkerMaintenanceEnv(gym.Env):
                 1,
                 shape=[config["number_of_machines"], ],
                 dtype='float32')
-        # config["path_to_keras_expert_model"]
-        self.model_expert = tf.keras.models.load_model('./pretrained_models/model_f_wsupervisor_D3BND3BND3BND1_adam.h5')
+
+        self.model_expert = tf.keras.models.load_model(config["path_to_keras_expert_model"])
         self._spec = EnvSpec("WorkerMaintenanceEnv-Worker-{}-v0".format(self.n_worker))
         self.ranking = 0
 

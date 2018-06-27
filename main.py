@@ -59,8 +59,9 @@ def main():
     # Done: change make_env behaviour such that simple env is created; see custom_envs.py
     # args.env_name has to start with ng_ currently only WorkerMaintenanceEnv is working
     env_config = ENV_CONFIG.copy()
+    env_config['path_to_keras_expert_model'] = args.path_to_keras_expert_model
     env_config['number_of_workers'] = args.number_of_workers
-    envs = [make_env(args.env_name, args.seed, i, args.log_dir, args.add_timestep, ENV_CONFIG )
+    envs = [make_env(args.env_name, args.seed, i, args.log_dir, args.add_timestep, ENV_CONFIG)
                 for i in range(args.num_processes)]
 
     if args.num_processes > 1:
