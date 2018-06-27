@@ -32,6 +32,11 @@ if args.recurrent_policy:
 
 num_updates = int(args.num_frames) // args.num_steps // args.num_processes
 
+print('#####-----#####')
+print("num_updates: {}".format(num_updates))
+print('#####-----#####')
+
+
 torch.manual_seed(args.seed)
 if args.cuda:
     torch.cuda.manual_seed(args.seed)
@@ -46,7 +51,7 @@ except OSError:
 
 def main():
     print("#######")
-    print("WARNING: All rewards are clipped or normalized so you need to use a monitor (see custom_envs.py) or visdom plot to get true rewards")
+    print("WARNING: All rewards are clipped or normalized so you need to use a monitor (see envs.py) or visdom plot to get true rewards")
     print("#######")
 
     torch.set_num_threads(1)
@@ -136,14 +141,20 @@ def main():
 
             # Obser reward and next obs
             obs, reward, done, info = envs.step(cpu_actions)
+            print("envs reward: {}".format(reward))
             reward = torch.from_numpy(np.expand_dims(np.stack(reward), 1)).float()
+            print("torch from numpy envs reward: {}".format(reward))
             episode_rewards += reward
+            print("episode_rewards: {}".format(episode_rewards))
 
             # If done then clean the history of observations.
             masks = torch.FloatTensor([[0.0] if done_ else [1.0] for done_ in done])
             final_rewards *= masks
             final_rewards += (1 - masks) * episode_rewards
             episode_rewards *= masks
+
+            print("final_rewards after masks: {}".format(final_rewards))
+            print("episode_rewards after masks: {}".format(episode_rewards))
 
             if args.cuda:
                 masks = masks.cuda()
