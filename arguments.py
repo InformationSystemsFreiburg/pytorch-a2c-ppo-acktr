@@ -63,6 +63,8 @@ def get_args():
                         help='disables visdom visualization')
     parser.add_argument('--port', type=int, default=8097,
                         help='port to run the server on (default: 8097)')
+    parser.add_argument('--number_of_workers', type=int, default=10,
+                        help='number of maintenance workers tha agent can schedule in the maintenance env')
     args = parser.parse_args()
 
     args.cuda = not args.no_cuda and torch.cuda.is_available()

@@ -21,6 +21,8 @@ from visualize import visdom_plot
 
 import algo
 
+from custom_envs.maintenance_simple_env import ENV_CONFIG
+
 args = get_args()
 
 assert args.algo in ['a2c', 'ppo', 'acktr']
@@ -44,7 +46,7 @@ except OSError:
 
 def main():
     print("#######")
-    print("WARNING: All rewards are clipped or normalized so you need to use a monitor (see envs.py) or visdom plot to get true rewards")
+    print("WARNING: All rewards are clipped or normalized so you need to use a monitor (see custom_envs.py) or visdom plot to get true rewards")
     print("#######")
 
     torch.set_num_threads(1)
@@ -54,7 +56,11 @@ def main():
         viz = Visdom(port=args.port)
         win = None
 
-    envs = [make_env(args.env_name, args.seed, i, args.log_dir, args.add_timestep)
+    # Done: change make_env behaviour such that simple env is created; see custom_envs.py
+    # args.env_name has to start with ng_ currently only WorkerMaintenanceEnv is working
+    env_config = ENV_CONFIG.copy()
+    env_config['number_of_workers'] = args.number_of_workers
+    envs = [make_env(args.env_name, args.seed, i, args.log_dir, args.add_timestep, ENV_CONFIG )
                 for i in range(args.num_processes)]
 
     if args.num_processes > 1:
@@ -68,6 +74,7 @@ def main():
     obs_shape = envs.observation_space.shape
     obs_shape = (obs_shape[0] * args.num_stack, *obs_shape[1:])
 
+    # Done: 2018/06/24. change Model in Policy to LSTM/GRU model (ref. CNN with gru); see model.py
     actor_critic = Policy(obs_shape, envs.action_space, args.recurrent_policy)
 
     if envs.action_space.__class__.__name__ == "Discrete":

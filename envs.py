@@ -22,10 +22,17 @@ try:
 except ImportError:
     pass
 
+# source file located in gym-maintenance project
+from custom_envs.maintenance_simple_env import MaintenanceEnv, WorkerMaintenanceEnv
 
-def make_env(env_id, seed, rank, log_dir, add_timestep):
+
+def make_env(env_id, seed, rank, log_dir, add_timestep, env_config=None):
     def _thunk():
-        if env_id.startswith("dm"):
+        if env_id.startswith("ng_Raw"):
+            env = MaintenanceEnv(env_config)
+        elif env_id.startswith("ng_Worker"):
+            env = WorkerMaintenanceEnv(env_config)
+        elif env_id.startswith("dm"):
             _, domain, task = env_id.split('.')
             env = dm_control2gym.make(domain_name=domain, task_name=task)
         else:
@@ -55,6 +62,39 @@ def make_env(env_id, seed, rank, log_dir, add_timestep):
         return env
 
     return _thunk
+
+# def make_env(env_id, seed, rank, log_dir, add_timestep):
+#     def _thunk():
+#         if env_id.startswith("dm"):
+#             _, domain, task = env_id.split('.')
+#             env = dm_control2gym.make(domain_name=domain, task_name=task)
+#         else:
+#             env = gym.make(env_id)
+#         is_atari = hasattr(gym.custom_envs, 'atari') and isinstance(
+#             env.unwrapped, gym.custom_envs.atari.atari_env.AtariEnv)
+#         if is_atari:
+#             env = make_atari(env_id)
+#         env.seed(seed + rank)
+#
+#         obs_shape = env.observation_space.shape
+#         if add_timestep and len(
+#                 obs_shape) == 1 and str(env).find('TimeLimit') > -1:
+#             env = AddTimestep(env)
+#
+#         if log_dir is not None:
+#             env = bench.Monitor(env, os.path.join(log_dir, str(rank)))
+#
+#         if is_atari:
+#             env = wrap_deepmind(env)
+#
+#         # If the input has shape (W,H,3), wrap for PyTorch convolutions
+#         obs_shape = env.observation_space.shape
+#         if len(obs_shape) == 3 and obs_shape[2] in [1, 3]:
+#             env = WrapPyTorch(env)
+#
+#         return env
+#
+#     return _thunk
 
 
 class AddTimestep(gym.ObservationWrapper):
