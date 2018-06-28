@@ -16,11 +16,6 @@ class Policy(nn.Module):
         if len(obs_shape) == 3:
             self.base = CNNBase(obs_shape[0], recurrent_policy)
         elif len(obs_shape) == 1:
-            print("#####-----#####")
-            print("#####-----#####")
-            print("\tMLPBase")
-            print("#####-----#####")
-            print("#####-----#####")
             self.base = MLPBase(obs_shape[0], recurrent_policy)
         else:
             raise NotImplementedError

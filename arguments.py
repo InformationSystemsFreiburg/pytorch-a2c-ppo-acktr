@@ -71,6 +71,8 @@ def get_args():
                              'observation into a worker space')
     parser.add_argument('--save-model-postfix', default='',
                         help='add some string to the model name')
+    parser.add_argument('--enable-debug-info-print', action='store_true', default=False,
+                        help='enable debug info print')
     args = parser.parse_args()
 
     args.cuda = not args.no_cuda and torch.cuda.is_available()
