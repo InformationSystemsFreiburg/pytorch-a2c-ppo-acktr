@@ -73,6 +73,10 @@ def get_args():
                         help='add some string to the model name')
     parser.add_argument('--enable-debug-info-print', action='store_true', default=False,
                         help='enable debug info print')
+    parser.add_argument('--enable-env-normalize-ob', action='store_true', default=True,
+                        help='enalbe normilization of env obsersavtion see VecNormalize()')
+    parser.add_argument('--enable-env-normalize-rw', action='store_true', default=True,
+                        help='enalbe normilization of env reward see VecNormalize()')
     args = parser.parse_args()
 
     args.cuda = not args.no_cuda and torch.cuda.is_available()
