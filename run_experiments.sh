@@ -65,9 +65,9 @@ nohup python main.py \
    --lr 2.5e-4 \
    --clip-param 0.1 \
    --value-loss-coef 1 \
-   --num-frames 365 \
+   --num-frames 364 \
    --num-processes 1 \
-   --num-steps 365 \
+   --num-steps 364 \
    --num-mini-batch 14 \
    --vis-interval 1 \
    --log-interval 1 \
@@ -90,6 +90,8 @@ nohup python main_visualize.py \
 #--------------------
 
 # c4
+# 364 entspricht 1 Jahr. dann ist der letzte reward den wir erhalten der letzte tag des jahres.
+
 nohup python main.py \
    --env-name "ng_Worker" \
    --algo ppo \
@@ -99,7 +101,7 @@ nohup python main.py \
    --value-loss-coef 1 \
    --num-frames 1000000 \
    --num-processes 8 \
-   --num-steps 365 \
+   --num-steps 364 \
    --num-mini-batch 14 \
    --vis-interval 10 \
    --log-interval 10 \
@@ -126,15 +128,17 @@ nohup python main.py \
    --lr 2.5e-4 \
    --clip-param 0.1 \
    --value-loss-coef 1 \
-   --num-frames 1000000 \
+   --num-frames 2912000 \
    --num-processes 8 \
-   --num-steps 365 \
-   --num-mini-batch 14 \
+   --num-steps 728 \
+   --num-mini-batch 364 \
    --vis-interval 1 \
    --log-interval 10 \
    --ppo-epoch 10 \
    --save-model-postfix "c5" \
    --log-dir "/tmp/gym/c5" \
+   --disable-env-normalize-ob \
+   --disable-env-normalize-rw \
    1>c5_out.log 2>c5_err.log &
 
 # visualize c5
