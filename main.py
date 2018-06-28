@@ -74,7 +74,8 @@ def main():
         envs = DummyVecEnv(envs)
 
     if len(envs.observation_space.shape) == 1:
-        envs = VecNormalize(envs, ob=args.enable_env_normalize_ob, ret=args.enable_env_normalize_rw, gamma=args.gamma)
+        envs = VecNormalize(envs, ob=not args.enable_env_normalize_ob, ret=not args.enable_env_normalize_rw,
+                            gamma=args.gamma)
 
     obs_shape = envs.observation_space.shape
     obs_shape = (obs_shape[0] * args.num_stack, *obs_shape[1:])

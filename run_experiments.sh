@@ -70,7 +70,7 @@ nohup python main.py \
    --num-steps 365 \
    --num-mini-batch 14 \
    --vis-interval 1 \
-   --log-interval 10 \
+   --log-interval 1 \
    --ppo-epoch 32 \
    --save-model-postfix "c3" \
    --log-dir "/tmp/gym/c3" \
