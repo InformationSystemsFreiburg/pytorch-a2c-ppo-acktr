@@ -74,6 +74,7 @@ def main():
         envs = DummyVecEnv(envs)
 
     if len(envs.observation_space.shape) == 1:
+        print('#####\nVecNormalize\n#####')
         envs = VecNormalize(envs, gamma=args.gamma)
 
     obs_shape = envs.observation_space.shape

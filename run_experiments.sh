@@ -112,3 +112,32 @@ nohup python main_visualize.py \
   --num-frames 1000000 \
   --log-dir "/tmp/gym/c4" \
   1>c4_vis_out.log 2>c4_vis_err.log &
+
+#--------------------
+
+# c5
+nohup python main.py \
+   --env-name "ng_Worker" \
+   --algo ppo \
+   --use-gae \
+   --lr 2.5e-4 \
+   --clip-param 0.1 \
+   --value-loss-coef 1 \
+   --num-frames 1000000 \
+   --num-processes 8 \
+   --num-steps 366 \
+   --num-mini-batch 14 \
+   --vis-interval 1 \
+   --log-interval 10 \
+   --ppo-epoch 10 \
+   --save-model-postfix "c5" \
+   --log-dir "/tmp/gym/c5" \
+   1>c5_out.log 2>c5_err.log &
+
+# visualize c5
+nohup python main_visualize.py \
+  --algo ppo \
+  --env-name "ng_Worker" \
+  --num-frames 1000000 \
+  --log-dir "/tmp/gym/c5" \
+  1>c5_vis_out.log 2>c5_vis_err.log &
