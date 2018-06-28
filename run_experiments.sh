@@ -74,6 +74,9 @@ nohup python main.py \
    --ppo-epoch 32 \
    --save-model-postfix "c3" \
    --log-dir "/tmp/gym/c3" \
+   --disable-env-normalize-ob \
+   --disable-env-normalize-rw \
+   --enable-debug-info-print \
    1>c3_out.log 2>c3_err.log &
 
 # visualize c3
@@ -125,7 +128,7 @@ nohup python main.py \
    --value-loss-coef 1 \
    --num-frames 1000000 \
    --num-processes 8 \
-   --num-steps 366 \
+   --num-steps 365 \
    --num-mini-batch 14 \
    --vis-interval 1 \
    --log-interval 10 \

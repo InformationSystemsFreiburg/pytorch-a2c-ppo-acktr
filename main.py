@@ -165,6 +165,8 @@ def main():
             rollouts.insert(current_obs, states, action, action_log_prob, value, reward, masks)
 
             if args.enable_debug_info_print:
+                print("#####")
+                print("cpu_action:".format(cpu_actions))
                 print("envs reward: {}".format(reward))
                 print("info stats reward: {}".format(info[0]["stats_relative_reward_regret"]+info[0][
                       "stats_relative_reward_penalty"]))
