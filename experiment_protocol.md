@@ -10,14 +10,29 @@ use `killall <process id>`  to shutdown visdom server.
 
 To run experiments use the `run_experiments.sh` script.
 
+calculations for `num_updates`
+```
+num_updates = num_frames // num_steps // num_processes
+```
+
+```
+num_frames = num_updates * num_steps * num_processes
+```
+
+for `num_updates = 500` ->
+
 # Protocol
 
-## 2018-28-06
+## 2018-06-29
+
+
+## 2018-06-28
 currently running on lms: c5
 PPO on Worker env without gru element.
 
 ### Results
 
+-----
 
 # Configurations
 
