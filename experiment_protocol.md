@@ -24,7 +24,12 @@ for `num_updates = 500` ->
 # Protocol
 
 ## 2018-06-29
-
+run c5  on ng_Worker for all possible nworker configs.
+PPO - Non RNN
+```
+chmod 755 run_experiments.sh
+nohup run_experiments.sh 1>run_experiments_out.log 2>run_experiments_err.log &
+```
 
 ## 2018-06-28
 currently running on lms: c5
