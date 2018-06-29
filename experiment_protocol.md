@@ -84,7 +84,7 @@ nohup python main_visualize.py \
   1>c2_vis_out.log 2>c2_vis_err.log &
 ```
 
-## c3 - single round for testing
+## c3 - single round for testing - No GRU
 ```
 nohup python main.py \
    --env-name "ng_Worker" \
@@ -180,4 +180,39 @@ nohup python main_visualize.py \
   --num-frames 1000000 \
   --log-dir "/tmp/gym/c5" \
   1>c5_vis_out.log 2>c5_vis_err.log &
+```
+
+## c6 - single round for testing - GRU
+```
+nohup python main.py \
+   --env-name "ng_Worker" \
+   --algo ppo \
+   --use-gae \
+   --lr 2.5e-4 \
+   --clip-param 0.1 \
+   --value-loss-coef 1 \
+   --num-frames 364 \
+   --num-processes 1 \
+   --num-steps 364 \
+   --num-mini-batch 1 \
+   --vis-interval 1 \
+   --log-interval 1 \
+   --ppo-epoch 32 \
+   --save-model-postfix "c6" \
+   --log-dir "/tmp/gym/c6" \
+   --disable-env-normalize-ob \
+   --disable-env-normalize-rw \
+   --enable-debug-info-print \
+   --recurrent-policy \
+   1>c6_out.log 2>c6_err.log &
+ ```
+
+### visualize c3
+```
+nohup python main_visualize.py \
+  --algo ppo \
+  --env-name "ng_Worker" \
+  --num-frames 364 \
+  --log-dir "/tmp/gym/c6" \
+  1>c6_vis_out.log 2>c6_vis_err.log &
 ```
