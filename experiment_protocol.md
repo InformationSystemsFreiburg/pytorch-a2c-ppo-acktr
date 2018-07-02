@@ -23,12 +23,20 @@ for `num_updates = 500` ->
 
 # Protocol
 
+## 2018-07-02
+run c7 on ng_Worker for all possible nworker configs.
+PPO - RNN
+```
+chmod 755 run_experiments_rnn.sh
+nohup ./run_experiments_rnn.sh 1>run_experiments_rnn_out.log 2>run_experiments_rnn_err.log &
+```
+
 ## 2018-06-29
-run c5  on ng_Worker for all possible nworker configs.
+run c5 on ng_Worker for all possible nworker configs.
 PPO - Non RNN
 ```
 chmod 755 run_experiments.sh
-nohup run_experiments.sh 1>run_experiments_out.log 2>run_experiments_err.log &
+nohup ./run_experiments.sh 1>run_experiments_out.log 2>run_experiments_err.log &
 ```
 
 ## 2018-06-28
@@ -227,7 +235,7 @@ nohup python main.py \
    1>c6_out.log 2>c6_err.log &
  ```
 
-### visualize c3
+### visualize c6
 ```
 nohup python main_visualize.py \
   --algo ppo \
@@ -235,4 +243,39 @@ nohup python main_visualize.py \
   --num-frames 364 \
   --log-dir "/tmp/gym/c6" \
   1>c6_vis_out.log 2>c6_vis_err.log &
+```
+
+## c7
+```
+nohup python main.py \
+   --env-name "ng_Worker" \
+   --algo ppo \
+   --use-gae \
+   --lr 2.5e-4 \
+   --clip-param 0.1 \
+   --value-loss-coef 1 \
+   --num-frames 2912000 \
+   --num-processes 8 \
+   --num-steps 728 \
+   --num-mini-batch 364 \
+   --vis-interval 10 \
+   --log-interval 10 \
+   --ppo-epoch 10 \
+   --save-model-postfix "c7_w$nworker" \
+   --log-dir "/tmp/gym/c7_w$nworker" \
+   --disable-env-normalize-ob \
+   --disable-env-normalize-rw \
+   --number-of-workers $nworker \
+   --recurrent-policy \
+   1>c7_out.log 2>c7_err.log &
+```
+
+### visualize c7
+```
+nohup python main_visualize.py \
+  --algo ppo \
+  --env-name "ng_Worker" \
+  --num-frames 2912000 \
+  --log-dir "/tmp/gym/c7" \
+  1>c7_vis_out.log 2>c7_vis_err.log &
 ```

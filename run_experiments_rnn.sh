@@ -17,11 +17,12 @@ do
        --vis-interval 10 \
        --log-interval 10 \
        --ppo-epoch 10 \
-       --save-model-postfix "c5_w$nworker" \
-       --log-dir "/tmp/gym/c5_w$nworker" \
+       --save-model-postfix "c7_w$nworker" \
+       --log-dir "/tmp/gym/c7_w$nworker" \
        --disable-env-normalize-ob \
        --disable-env-normalize-rw \
-       --number-of-workers $nworker
+       --number-of-workers $nworker \
+       --recurrent-policy
 done
 
 echo 'HEUREKA, I am done!'
