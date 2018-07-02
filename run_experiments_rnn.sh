@@ -13,7 +13,7 @@ do
        --num-frames 2912000 \
        --num-processes 8 \
        --num-steps 728 \
-       --num-mini-batch 364 \
+       --num-mini-batch 8 \
        --vis-interval 10 \
        --log-interval 10 \
        --ppo-epoch 10 \
