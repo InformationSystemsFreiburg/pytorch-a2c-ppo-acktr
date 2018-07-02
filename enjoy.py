@@ -245,13 +245,13 @@ try:
 except OSError:
     pass
 
-env.machine_park_info_df.to_csv(
-    os.path.join(
-        args.path_to_results_dir,
-        'machine_park_info_{}_w{}.csv'.format(
-            args.strategy_name,
-            args.number_of_workers)))
-env.close()
+# env.machine_park_info_df.to_csv(
+#     os.path.join(
+#         args.path_to_results_dir,
+#         'machine_park_info_{}_w{}.csv'.format(
+#             args.strategy_name,
+#             args.number_of_workers)))
+# env.close()
 statistics.to_csv(
     os.path.join(
         args.path_to_results_dir,
