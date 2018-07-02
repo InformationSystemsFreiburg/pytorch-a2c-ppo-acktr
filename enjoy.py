@@ -154,7 +154,7 @@ statistics = init_statistics_vec_df(
                     max_exp_nr=args.number_of_episodes)
 
 # this ill break the code, if we use an other environment than ng_...
-action_seq = np.zeros(args.number_of_episodes, env_config["time_horizon"]-1)
+action_seq = np.zeros([args.number_of_episodes, env_config["time_horizon"]-1])
 
 for i in range(args.number_of_episodes):
 
