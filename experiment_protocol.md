@@ -297,7 +297,7 @@ config id's match the config id's we used for training.
 
 ### c5
 ```
-nohup python main.py \
+nohup python enjoy.py \
    --env-name "ng_Worker" \
    --algo ppo \
    --path-to-ac "./trained_models/ppo/ng_Worker-ppo-c5_w$nworker-400.pt" \
