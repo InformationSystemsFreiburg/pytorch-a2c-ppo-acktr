@@ -186,7 +186,7 @@ for i in range(args.number_of_episodes):
                                                         masks,
                                                         deterministic=True)
         cpu_actions = action.squeeze(1).cpu().numpy()
-        acsec.extend(cpu_actions[0][0])
+        acsec.extend(cpu_actions[0])
         # Obser reward and next obs
         obs, reward, done, info_ = env.step(cpu_actions)
         info = info_[0]
