@@ -184,7 +184,8 @@ for i in range(args.number_of_episodes):
                                                         deterministic=True)
         cpu_actions = action.squeeze(1).cpu().numpy()
         # Obser reward and next obs
-        obs, reward, done, info = env.step(cpu_actions)
+        obs, reward, done, info_ = env.step(cpu_actions)
+        info = info_[0]
 
         sum_reward += reward
         sum_nr_maintenance_actions += info['stats_nr_maintenance_actions']
