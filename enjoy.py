@@ -109,8 +109,7 @@ else:
 
 
 if len(env.observation_space.shape) == 1:
-    env = VecNormalize(env, ob=not args.disable_env_normalize_ob, ret=not args.disable_env_normalize_rw,
-                        gamma=args.gamma)
+    env = VecNormalize(env, ob=not args.disable_env_normalize_ob, ret=not args.disable_env_normalize_rw)
     env.ob_rms = ob_rms
 
     # An ugly hack to remove updates
