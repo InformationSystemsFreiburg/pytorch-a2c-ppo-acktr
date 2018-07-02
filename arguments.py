@@ -74,9 +74,9 @@ def get_args():
     parser.add_argument('--enable-debug-info-print', action='store_true', default=False,
                         help='enable debug info print')
     parser.add_argument('--disable-env-normalize-ob', action='store_true', default=False,
-                        help='disable normilization of env obsersavtion see VecNormalize()')
+                        help='disable normalization of env observation see VecNormalize()')
     parser.add_argument('--disable-env-normalize-rw', action='store_true', default=False,
-                        help='disable normilization of env reward see VecNormalize()')
+                        help='disable normalization of env reward see VecNormalize()')
     args = parser.parse_args()
 
     args.cuda = not args.no_cuda and torch.cuda.is_available()

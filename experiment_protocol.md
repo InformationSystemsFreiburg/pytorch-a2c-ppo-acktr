@@ -24,6 +24,18 @@ for `num_updates = 500` ->
 # Protocol
 
 ## 2018-07-02
+
+**Enjoy/Rollout**
+
+run enjoy script for c5 config (PPO - NON RNN)
+```
+chmod 755 run_experiments_rnn.sh
+nohup ./run_enjoy.sh 1>run_enjoy_out.log 2>run_enjoy_err.log &
+```
+
+
+**Training**
+
 run c7 on ng_Worker for all possible nworker configs.
 PPO - RNN
 ```
@@ -47,7 +59,7 @@ PPO on Worker env without gru element.
 
 -----
 
-# Configurations
+# Training Configurations
 
 `num_steps` 364 entspricht 1 Jahr. dann ist der letzte reward den wir erhalten der letzte tag des jahres.
 
@@ -278,4 +290,23 @@ nohup python main_visualize.py \
   --num-frames 2912000 \
   --log-dir "/tmp/gym/c7" \
   1>c7_vis_out.log 2>c7_vis_err.log &
+```
+
+## Enjoy Configurations
+config id's match the config id's we used for training.
+
+### c5
+```
+nohup python main.py \
+   --env-name "ng_Worker" \
+   --algo ppo \
+   --path-to-ac ".trained_models/ppo/ng_Worker-ppo-c5_w$nworker-400.pt" \
+   --log-interval 10 \
+   --disable-env-normalize-ob \
+   --disable-env-normalize-rw \
+   --number-of-workers $nworker \
+   --path-to-results-dir "./results/" \
+   --strategy-name "PPO-NON-RNN" \
+   --number-of-episodes 100 \
+   1>c5_out.log 2>c5_err.log &
 ```
