@@ -6,7 +6,7 @@ do
     python main.py \
    --env-name "ng_Worker" \
    --algo ppo \
-   --path-to-ac ".trained_models/ppo/ng_Worker-ppo-c5_w$nworker-400.pt" \
+   --path-to-ac "./trained_models/ppo/ng_Worker-ppo-c5_w$nworker-400.pt" \
    --log-interval 10 \
    --disable-env-normalize-ob \
    --disable-env-normalize-rw \

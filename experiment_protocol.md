@@ -29,7 +29,7 @@ for `num_updates = 500` ->
 
 run enjoy script for c5 config (PPO - NON RNN)
 ```
-chmod 755 run_experiments_rnn.sh
+chmod 755 run_enjoy.sh
 nohup ./run_enjoy.sh 1>run_enjoy_out.log 2>run_enjoy_err.log &
 ```
 
@@ -300,7 +300,7 @@ config id's match the config id's we used for training.
 nohup python main.py \
    --env-name "ng_Worker" \
    --algo ppo \
-   --path-to-ac ".trained_models/ppo/ng_Worker-ppo-c5_w$nworker-400.pt" \
+   --path-to-ac "./trained_models/ppo/ng_Worker-ppo-c5_w$nworker-400.pt" \
    --log-interval 10 \
    --disable-env-normalize-ob \
    --disable-env-normalize-rw \
