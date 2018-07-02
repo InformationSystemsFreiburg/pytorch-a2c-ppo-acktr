@@ -21,6 +21,11 @@ num_frames = num_updates * num_steps * num_processes
 
 for `num_updates = 500` ->
 
+# Todo's
+
+* idea: try configs with smaller `num_steps` configuration. This increases updates which could help to overcome the problem that agents learn to maintain every single day.
+* add action tracker to enjoy script to calculate the action distribution
+
 # Protocol
 
 ## 2018-07-02

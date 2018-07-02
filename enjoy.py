@@ -153,6 +153,9 @@ statistics = init_statistics_vec_df(
                     nmachines=env_config['number_of_machines'],
                     max_exp_nr=args.number_of_episodes)
 
+# this ill break the code, if we use an other environment than ng_...
+action_seq = np.zeros(args.number_of_episodes, env_config["time_horizon"]-1)
+
 for i in range(args.number_of_episodes):
 
     # render_func('human')
@@ -174,7 +177,7 @@ for i in range(args.number_of_episodes):
     sum_relative_reward_penalty = 0.0
     sum_nr_days_with_machines_in_failure_state_after_maintenance = 0.0
     sum_nr_maintenance_days = 0.0
-
+    acsec = []
     while True:
 
         with torch.no_grad():
@@ -183,6 +186,7 @@ for i in range(args.number_of_episodes):
                                                         masks,
                                                         deterministic=True)
         cpu_actions = action.squeeze(1).cpu().numpy()
+        acsec.extend(cpu_actions[0][0])
         # Obser reward and next obs
         obs, reward, done, info_ = env.step(cpu_actions)
         info = info_[0]
@@ -238,6 +242,7 @@ for i in range(args.number_of_episodes):
             statistics.loc[i, 'nr_days_with_machines_in_failure_state_after_maintenance'] = \
                 sum_nr_days_with_machines_in_failure_state_after_maintenance
             statistics.loc[i, 'nr_maintenance_days'] = sum_nr_maintenance_days
+            action_seq[i,:] = acsec
             break
 
 try:
@@ -252,6 +257,14 @@ except OSError:
 #             args.strategy_name,
 #             args.number_of_workers)))
 # env.close()
+np.savetxt(
+    os.path.join(
+        args.path_to_results_dir,
+        'action_sequence_{}_w{}.csv'.format(
+            args.strategy_name,
+            args.number_of_workers)),
+    action_seq,
+    delimiter=",")
 statistics.to_csv(
     os.path.join(
         args.path_to_results_dir,
