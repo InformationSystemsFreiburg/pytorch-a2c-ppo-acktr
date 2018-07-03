@@ -48,6 +48,8 @@ parser.add_argument('--strategy-name', default='default',
                     help='name of the strategy')
 parser.add_argument('--number-of-episodes', type=int, default=100,
                     help='number of episodes')
+parser.add_argument('--enable-0action-boost', action='store_true', default=False,
+                    help='enable 0 action boost')
 args = parser.parse_args()
 
 
@@ -91,6 +93,7 @@ def init_statistics_vec_df(maintenance_strategy, nworker, nmachines, max_exp_nr)
 env_config = ENV_CONFIG.copy()
 # env_config['path_to_keras_expert_model'] = args.path_to_keras_expert_model
 env_config['number_of_workers'] = args.number_of_workers
+env_config['enable_0action_boost'] = args.enable_0action_boost
 
 # exchange None with args.log_dir
 env = make_env(args.env_name, args.seed, 0, None, args.add_timestep, env_config)

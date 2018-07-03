@@ -11,16 +11,17 @@ do
        --clip-param 0.1 \
        --value-loss-coef 1 \
        --num-frames 2912000 \
-       --num-processes 8 \
-       --num-steps 728 \
+       --num-processes 15 \
+       --num-steps 14 \
        --num-mini-batch 364 \
-       --vis-interval 10 \
+       --vis-interval 1 \
        --log-interval 10 \
        --ppo-epoch 10 \
        --disable-env-normalize-ob \
        --disable-env-normalize-rw \
-       --save-model-postfix "c5_w$nworker" \
-       --log-dir "/tmp/gym/c5_w$nworker" \
+       --enable-0action-boost \
+       --save-model-postfix "c8_w$nworker" \
+       --log-dir "/tmp/gym/c8_w$nworker" \
        --number-of-workers $nworker
 done
 

@@ -65,6 +65,7 @@ def main():
     env_config = ENV_CONFIG.copy()
     # env_config['path_to_keras_expert_model'] = args.path_to_keras_expert_model
     env_config['number_of_workers'] = args.number_of_workers
+    env_config['enable_0action_boost'] = args.enable_0action_boost
     envs = [make_env(args.env_name, args.seed, i, args.log_dir, args.add_timestep, env_config)
                 for i in range(args.num_processes)]
 

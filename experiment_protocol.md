@@ -243,10 +243,10 @@ nohup python main.py \
    --vis-interval 1 \
    --log-interval 10 \
    --ppo-epoch 10 \
-   --save-model-postfix "c5" \
-   --log-dir "/tmp/gym/c5" \
    --disable-env-normalize-ob \
    --disable-env-normalize-rw \
+   --save-model-postfix "c5" \
+   --log-dir "/tmp/gym/c5" \
    1>c5_out.log 2>c5_err.log &
 ```
 
@@ -311,12 +311,12 @@ nohup python main.py \
    --vis-interval 10 \
    --log-interval 10 \
    --ppo-epoch 10 \
-   --save-model-postfix "c7_w$nworker" \
-   --log-dir "/tmp/gym/c7_w$nworker" \
    --disable-env-normalize-ob \
    --disable-env-normalize-rw \
-   --number-of-workers $nworker \
    --recurrent-policy \
+   --save-model-postfix "c7_w$nworker" \
+   --log-dir "/tmp/gym/c7_w$nworker" \
+   --number-of-workers $nworker \
    1>c7_out.log 2>c7_err.log &
 ```
 
@@ -328,6 +328,41 @@ nohup python main_visualize.py \
   --num-frames 2912000 \
   --log-dir "/tmp/gym/c7" \
   1>c7_vis_out.log 2>c7_vis_err.log &
+```
+
+## c8
+like **c5** with smaller num_steps and 0action_boost enabled.
+```
+nohup python main.py \
+   --env-name "ng_Worker" \
+   --algo ppo \
+   --use-gae \
+   --lr 2.5e-4 \
+   --clip-param 0.1 \
+   --value-loss-coef 1 \
+   --num-frames 2912000 \
+   --num-processes 15 \
+   --num-steps 14 \
+   --num-mini-batch 364 \
+   --vis-interval 1 \
+   --log-interval 10 \
+   --ppo-epoch 10 \
+   --disable-env-normalize-ob \
+   --disable-env-normalize-rw \
+   --enable-0action-boost \
+   --save-model-postfix "c8" \
+   --log-dir "/tmp/gym/c8" \
+   1>c8_out.log 2>c8_err.log &
+```
+
+### visualize c8
+```
+nohup python main_visualize.py \
+  --algo ppo \
+  --env-name "ng_Worker" \
+  --num-frames 2912000 \
+  --log-dir "/tmp/gym/c8" \
+  1>c8_vis_out.log 2>c8_vis_err.log &
 ```
 
 ## Enjoy configurations
