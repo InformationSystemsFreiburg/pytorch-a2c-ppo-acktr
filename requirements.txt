@@ -1,3 +1,14 @@
-gym
+pandas
+numpy
+scikit-learn[alldeps]
 matplotlib
+tensorflow
+http://download.pytorch.org/whl/cpu/torch-0.4.0-cp36-cp36m-linux_x86_64.whl
+torchvision
+visdom
+gym
+ray
+ray[rllib]
+jupyterlab
+h5py
 pybullet

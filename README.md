@@ -1,5 +1,7 @@
 # pytorch-a2c-ppo-acktr
 
+## Update 2018/07/03: NG: update installation instructions
+
 ## Update 2018/06/24: NG: adding MaintenanceEnv to make_envs, add gru support for ppo policy
 
 ## Update 10/06/2017: added enjoy.py and a link to pretrained models!
@@ -37,7 +39,7 @@ All environments are operated using exactly the same Gym interface. See their do
 
 To use the DeepMind Control Suite environments, set the flag `--env-name dm.<domain_name>.<task_name>`, where `domain_name` and `task_name` are the name of a domain (e.g. `hopper`) and a task within that domain (e.g. `stand`) from the DeepMind Control Suite. Refer to their repo and their [tech report](https://arxiv.org/abs/1801.00690) for a full list of available domains and tasks. Other than setting the task, the API for interacting with the environment is exactly the same as for all the Gym environments thanks to [dm_control2gym](https://github.com/martinseilair/dm_control2gym).
 
-## Requirements
+## Requirements and how to install
 
 * Python 3 (it might work with Python 2, but I didn't test it)
 * [PyTorch](http://pytorch.org/)
@@ -56,6 +58,21 @@ cd baselines
 pip install -e .
 
 # Other requirements
+pip install -r requirements.txt
+```
+
+## How to install
+
+clone git repository
+
+```
+git clone https://github.com/InformationSystemsFreiburg/pytorch-a2c-ppo-acktr.git
+```
+
+
+
+install required python packages
+```
 pip install -r requirements.txt
 ```
 
