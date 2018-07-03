@@ -71,7 +71,7 @@ ENV_CONFIG = dict(
     rul_estimation_method='clipped',
 
     # keras expert model for worker
-    path_to_keras_expert_model='./pretrained_models/model_f_wsupervisor_D3BND3BND3BND1_adam.h5',
+    path_to_keras_expert_model='./custom_envs/pretrained_models/model_f_wsupervisor_D3BND3BND3BND1_adam.h5',
 
     # boost "save 0action" reward
     enable_0action_boost=False,
