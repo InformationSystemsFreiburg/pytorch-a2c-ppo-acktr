@@ -207,10 +207,14 @@ class MachineParkVecSimple(object):
         return reward, invalid_action, stats
 
     def calculate_reward(self, actions, stats):
+        reward_0action_boost = 0.0
         reward_regret = 0.0
         reward_penalty = 0.0
         n_good_repairs = 0
         n_machines_in_failure_state = self.number_of_machines - self.state_is_running.sum()
+
+        if actions.sum() == 0 and self.state_is_running.all() == 1 and self.config['enable_0action_boost']:
+            reward_0action_boost = 1.0
 
         if actions.sum() > 0:
             self.internal_state_days_with_maintenance += 1
@@ -232,7 +236,7 @@ class MachineParkVecSimple(object):
         stats['stats_relative_reward_regret'] = reward_regret
         stats['stats_relative_reward_penalty'] = reward_penalty
 
-        reward = reward_regret + reward_penalty
+        reward = reward_0action_boost + reward_regret + reward_penalty
         return reward, stats
 
     def repair(self, idx, stats):

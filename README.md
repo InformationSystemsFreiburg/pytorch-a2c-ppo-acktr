@@ -69,11 +69,19 @@ clone git repository
 git clone https://github.com/InformationSystemsFreiburg/pytorch-a2c-ppo-acktr.git
 ```
 
+create new environment (using python 3.6) and activate it
 
-
-install required python packages
+install required python packages into new, activated environment
 ```
 pip install -r requirements.txt
+```
+
+install custom_py_packages (like OpenAI baselines)
+```
+# Baselines for Atari preprocessing
+git clone https://github.com/openai/baselines.git
+cd baselines
+pip install -e .
 ```
 
 ## Contributions

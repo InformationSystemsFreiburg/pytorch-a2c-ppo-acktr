@@ -1,4 +1,13 @@
-# General
+# Todo's
+
+* idea: try configs with smaller `num_steps` configuration. This increases updates which could help to overcome the problem that agents learn to maintain every single day.
+* change environment reward function: promote 0 action by setting reward to 1 if 0 was chosen and all machines are still running afterwards.
+
+
+# General information
+
+## Useful commands
+
 Run a visdom server to monitor results:
 ```
 nohup python -m visdom.server 1>visdom_out.log 2>visdom_err.log &
@@ -6,9 +15,33 @@ nohup python -m visdom.server 1>visdom_out.log 2>visdom_err.log &
 
 Process id of last run: 123579
 
-use `killall <process id>`  to shutdown visdom server.
+list running processes
 
-To run experiments use the `run_experiments.sh` script.
+```
+ps -aux | grep <...>
+```
+
+
+use `kill <process id>`  to shutdown visdom server.
+
+hardcore version if nothing helps
+
+```
+kill -9 <process id>
+```
+
+
+To run experiments use the `run_experiments_<...>.sh` scripts.
+
+* `run_experiments.sh`
+* `run_experiments_rnn.sh`
+* `run_experiments_feudal.sh`
+
+To run rollouts use the `run_enjoy_<...>.sh` scripts.
+
+* `run_enjoy.sh`
+* `run_enjoy_rnn.sh`
+* `run_enjoy_lstm.sh`
 
 calculations for `num_updates`
 ```
@@ -19,14 +52,14 @@ num_updates = num_frames // num_steps // num_processes
 num_frames = num_updates * num_steps * num_processes
 ```
 
-for `num_updates = 500` ->
 
-# Todo's
+some important paths:
 
-* idea: try configs with smaller `num_steps` configuration. This increases updates which could help to overcome the problem that agents learn to maintain every single day.
-* add action tracker to enjoy script to calculate the action distribution
+* `./results`: default storing loaction for `enjoy` runs.
+* `./trained_models`: default storing location for resulting models, trained during experiment execution
+* `/tmp/gym/..`: default storing location for monitoring files. used by visdom to visualize training progress
 
-# Protocol
+# Experiment protocol
 
 ## 2018-07-02
 
@@ -64,7 +97,7 @@ PPO on Worker env without gru element.
 
 -----
 
-# Training Configurations
+# Training configurations
 
 `num_steps` 364 entspricht 1 Jahr. dann ist der letzte reward den wir erhalten der letzte tag des jahres.
 
@@ -297,7 +330,7 @@ nohup python main_visualize.py \
   1>c7_vis_out.log 2>c7_vis_err.log &
 ```
 
-## Enjoy Configurations
+## Enjoy configurations
 config id's match the config id's we used for training.
 
 ### c5

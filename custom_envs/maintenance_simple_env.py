@@ -16,12 +16,12 @@ from gym.spaces import Discrete, Box
 from gym.envs.registration import EnvSpec
 from gym import logger
 
-from custom_envs.machines.machine_park_simple import MachineParkVecSimple
+from gym_maintenance.envs.machines.machine_park_simple import MachineParkVecSimple
 
 ENV_CONFIG = dict(
     # general
     number_of_machines=100,
-    time_horizon=365,
+        time_horizon=365,
     episodes=100,
     number_of_workers=1,
     max_rul=365,
@@ -71,7 +71,10 @@ ENV_CONFIG = dict(
     rul_estimation_method='clipped',
 
     # keras expert model for worker
-    path_to_keras_expert_model='./custom_envs/pretrained_models/model_f_wsupervisor_D3BND3BND3BND1_adam.h5',
+    path_to_keras_expert_model='./pretrained_models/model_f_wsupervisor_D3BND3BND3BND1_adam.h5',
+
+    # boost "save 0action" reward
+    enable_0action_boost=False,
 )
 
 
