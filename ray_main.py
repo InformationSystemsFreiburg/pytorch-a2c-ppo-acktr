@@ -231,6 +231,7 @@ def ray_main():
     for nw in n_worker:
         result_object_ids.append(run.remote(nw))
     results = ray.get(result_object_ids)
+    print(results)
 
 if __name__ == "__main__":
     ray.init()

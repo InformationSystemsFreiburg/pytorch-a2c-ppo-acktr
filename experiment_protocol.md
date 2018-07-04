@@ -381,6 +381,41 @@ nohup python main_visualize.py \
   1>c8_vis_out.log 2>c8_vis_err.log &
 ```
 
+## c9
+like **c8(c5)** with smaller num_steps and 0action_boost enabled.
+```
+nohup python main.py \
+   --env-name "ng_Worker" \
+   --algo ppo \
+   --use-gae \
+   --lr 2.5e-4 \
+   --clip-param 0.1 \
+   --value-loss-coef 1 \
+   --num-frames 1456000 \
+   --num-processes 1 \
+   --num-steps 14 \
+   --num-mini-batch 14 \
+   --vis-interval 1 \
+   --log-interval 10 \
+   --ppo-epoch 10 \
+   --disable-env-normalize-ob \
+   --disable-env-normalize-rw \
+   --enable-0action-boost \
+   --save-model-postfix "c9" \
+   --log-dir "/tmp/gym/c9" \
+   1>c9_out.log 2>c9_err.log &
+```
+
+### visualize c8
+```
+nohup python main_visualize.py \
+  --algo ppo \
+  --env-name "ng_Worker" \
+  --num-frames 1456000 \
+  --log-dir "/tmp/gym/c9" \
+  1>c9_vis_out.log 2>c9_vis_err.log &
+```
+
 ## Enjoy configurations
 config id's match the config id's we used for training.
 
