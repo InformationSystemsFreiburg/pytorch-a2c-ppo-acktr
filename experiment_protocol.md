@@ -5,6 +5,10 @@
 
 
 # General information
+some required constraints:
+
+`num-mini-batch <= num-processes * num-steps`: otherwise sampling will raise an exception
+
 
 ## Useful commands
 
@@ -13,7 +17,7 @@ Run a visdom server to monitor results:
 nohup python -m visdom.server 1>visdom_out.log 2>visdom_err.log &
 ```
 
-Process id of last run: 123579
+then, run firefox or chrom(ium) and connect to `http://localhost:8097`
 
 list running processes
 
@@ -60,6 +64,18 @@ some important paths:
 * `/tmp/gym/..`: default storing location for monitoring files. used by visdom to visualize training progress
 
 # Experiment protocol
+
+## 2018-07-04
+
+**Training**
+currently running on `cdsvmlinux`
+c8 is the same es c5 with more `num_processes` and `lower num_steps`
+NON RNN and  0action_boost enabled
+```
+chmod 755 run_experiments_c8.sh
+nohup ./run_experiments_c8.sh 1>run_experiments_c8_out.log 2>run_experiments_c8_err.log &
+```
+
 
 ## 2018-07-02
 
@@ -341,9 +357,9 @@ nohup python main.py \
    --clip-param 0.1 \
    --value-loss-coef 1 \
    --num-frames 2912000 \
-   --num-processes 15 \
+   --num-processes 10 \
    --num-steps 14 \
-   --num-mini-batch 364 \
+   --num-mini-batch 14 \
    --vis-interval 1 \
    --log-interval 10 \
    --ppo-epoch 10 \
@@ -369,6 +385,8 @@ nohup python main_visualize.py \
 config id's match the config id's we used for training.
 
 ### c5
+currently, results are stored in `./results/` and named `action_sequence_PPO-NON-RNN_w<>.csv` and `statistics_PPO-NON-RNN_w<>.csv`
+renaming to PPO-NON-RNN-c5 happend afterwards and is not done on the server yet.
 ```
 nohup python enjoy.py \
    --env-name "ng_Worker" \
@@ -378,7 +396,7 @@ nohup python enjoy.py \
    --disable-env-normalize-rw \
    --number-of-workers $nworker \
    --path-to-results-dir "./results/" \
-   --strategy-name "PPO-NON-RNN" \
+   --strategy-name "PPO-NON-RNN-c5" \
    --number-of-episodes 100 \
    1>c5_out.log 2>c5_err.log &
 ```
