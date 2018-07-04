@@ -11,7 +11,7 @@ do
        --clip-param 0.1 \
        --value-loss-coef 1 \
        --num-frames 2912000 \
-       --num-processes 15 \
+       --num-processes 10 \
        --num-steps 14 \
        --num-mini-batch 364 \
        --vis-interval 1 \
