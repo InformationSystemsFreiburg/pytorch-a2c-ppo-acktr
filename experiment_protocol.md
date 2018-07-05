@@ -77,6 +77,14 @@ nohup ./run_experiments_c8.sh 1>run_experiments_c8_out.log 2>run_experiments_c8_
 ```
 
 
+currently running on `cdsvmlinux`
+c9: is the same as c8 but a ray version. highly parallellized
+NON RNN and  0action_boost enabled
+```
+chmod 755 run_experiments_ray.sh
+nohup ./run_experiments_ray.sh 1>run_experiments_ray_out.log 2>run_experiments_ray_err.log &
+```
+
 ## 2018-07-02
 
 **Enjoy/Rollout**

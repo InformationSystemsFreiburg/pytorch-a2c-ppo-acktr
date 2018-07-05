@@ -37,16 +37,11 @@ torch.manual_seed(args.seed)
 if args.cuda:
     torch.cuda.manual_seed(args.seed)
 
-try:
-    os.makedirs(args.log_dir)
-except OSError:
-    files = glob.glob(os.path.join(args.log_dir, '*.monitor.csv'))
-    for f in files:
-        os.remove(f)
+
 
 
 @ray.remote
-def run(number_of_workers):
+def run(number_of_workers, log_dir, vis_title):
     print("#######")
     print("WARNING: All rewards are clipped or normalized so you need to use a monitor (see envs.py) or visdom plot to get true rewards")
     print("#######")
@@ -54,6 +49,13 @@ def run(number_of_workers):
     print("#######")
     print("num_updates: {}".format(num_updates))
     print("#######")
+
+    try:
+        os.makedirs(log_dir)
+    except OSError:
+        files = glob.glob(os.path.join(log_dir, '*.monitor.csv'))
+        for f in files:
+            os.remove(f)
 
     torch.set_num_threads(1)
 
@@ -68,7 +70,7 @@ def run(number_of_workers):
     # env_config['path_to_keras_expert_model'] = args.path_to_keras_expert_model
     env_config['number_of_workers'] = number_of_workers
     env_config['enable_0action_boost'] = args.enable_0action_boost
-    envs = [make_env(args.env_name, args.seed, i, args.log_dir, args.add_timestep, env_config)
+    envs = [make_env(args.env_name, args.seed, i, log_dir, args.add_timestep, env_config)
                 for i in range(args.num_processes)]
 
     if args.num_processes > 1:
@@ -218,7 +220,7 @@ def run(number_of_workers):
         if args.vis and j % args.vis_interval == 0:
             try:
                 # Sometimes monitor doesn't properly flush the outputs
-                win = visdom_plot(viz, win, args.log_dir, args.env_name,
+                win = visdom_plot(viz, win, log_dir, vis_title,
                                   args.algo, args.num_frames)
             except IOError:
                 pass
@@ -229,7 +231,9 @@ def ray_main():
     n_worker = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     result_object_ids = []
     for nw in n_worker:
-        result_object_ids.append(run.remote(nw))
+        log_dir = "{}_w{}".format(args.log_dir, n_worker)
+        vis_title = "{}_{}_w{}".format(args.env_name, args.save_model_postfix, n_worker)
+        result_object_ids.append(run.remote(nw, log_dir , vis_title))
     results = ray.get(result_object_ids)
     print(results)
 
