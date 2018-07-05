@@ -231,9 +231,9 @@ def ray_main():
     n_worker = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     result_object_ids = []
     for nw in n_worker:
-        log_dir = "{}_w{}".format(args.log_dir, n_worker)
-        vis_title = "{}_{}_w{}".format(args.env_name, args.save_model_postfix, n_worker)
-        result_object_ids.append(run.remote(nw, log_dir , vis_title))
+        log_dir = "{}_w{}".format(args.log_dir, nw)
+        vis_title = "{}_{}_w{}".format(args.env_name, args.save_model_postfix, nw)
+        result_object_ids.append(run.remote(nw, log_dir, vis_title))
     results = ray.get(result_object_ids)
     print(results)
 
