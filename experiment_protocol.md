@@ -11,6 +11,8 @@ some required constraints:
 
 `num-mini-batch <= num-processes * num-steps`: otherwise sampling will raise an exception
 
+for recurrent version:
+`num-mini-batch <= num-processes`: otherwise sampling will raise an exception
 
 ## Useful commands
 
@@ -498,8 +500,8 @@ nohup python main.py \
    --lr 2.5e-4 \
    --clip-param 0.1 \
    --value-loss-coef 1 \
-   --num-frames 2912000 \
-   --num-processes 10 \
+   --num-frames 3920000 \
+   --num-processes 14 \
    --num-steps 14 \
    --num-mini-batch 14 \
    --vis-interval 100 \
