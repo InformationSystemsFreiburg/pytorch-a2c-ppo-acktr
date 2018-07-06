@@ -1,7 +1,9 @@
 # Todo's
 
-* idea: try configs with smaller `num_steps` configuration. This increases updates which could help to overcome the problem that agents learn to maintain every single day.
-* change environment reward function: promote 0 action by setting reward to 1 if 0 was chosen and all machines are still running afterwards.
+
+* check if we can use num_processes>1 in ray setup.
+* ~~DONE: 2018-07-05:idea: try configs with smaller `num_steps` configuration. This increases updates which could help to overcome the problem that agents learn to maintain every single day.~~
+* ~~DONE: 2018-07-04:change environment reward function: promote 0 action by setting reward to 1 if 0 was chosen and all machines are still running afterwards.~~
 
 
 # General information
@@ -67,12 +69,18 @@ some important paths:
 # Experiment protocol
 
 ## currently running
-* run_experiments_c8.sh -> cdsvmlinux
-* run_experiments_ray.sh with c9 -> cdsvmlinux
-* run_experiments_rnn.sh with c7 -> cdsvmlinux
+* run_enjoy.sh with c7 -> cdsvmlinux
+* run_experiments_ray.sh with c9 -> cdsvmlinux (still running but almost done 2018-07-06)
+
+to check:
+
+## 2018-07-06
+* c7, c8 and c9 are done.
+* run enjoy c8 and c7.
+* have to repeat c9 ray version. Using ray, Speedup is not significantly higher, results seem to be lower.
+* run c11 on cdsvmlinux
 
 ## 2018-07-05
-currently running on `cdsvmlinux`
 c9: is the same as c8 but a ray version. highly parallelized
 NON RNN and  0action_boost enabled
 ```
@@ -84,7 +92,6 @@ nohup ./run_experiments_ray.sh 1>run_experiments_ray_out.log 2>run_experiments_r
 ## 2018-07-04
 
 **Training**
-currently running on `cdsvmlinux`
 c8 is the same es c5 with more `num_processes` and `lower num_steps`
 NON RNN and  0action_boost enabled
 ```
@@ -93,7 +100,6 @@ nohup ./run_experiments_c8.sh 1>run_experiments_c8_out.log 2>run_experiments_c8_
 ```
 
 
-currently running on `cdsvmlinux`
 c9: is the same as c8 but a ray version. highly parallelized
 NON RNN and  0action_boost enabled
 ```
@@ -130,7 +136,7 @@ nohup ./run_experiments.sh 1>run_experiments_out.log 2>run_experiments_err.log &
 ```
 
 ## 2018-06-28
-currently running on lms: c5
+lms: c5
 PPO on Worker env without gru element.
 
 ### Results
@@ -285,6 +291,7 @@ nohup python main.py \
    --ppo-epoch 10 \
    --disable-env-normalize-ob \
    --disable-env-normalize-rw \
+   --number-of-workers $nworker
    --save-model-postfix "c5" \
    --log-dir "/tmp/gym/c5" \
    1>c5_out.log 2>c5_err.log &
@@ -354,6 +361,7 @@ nohup python main.py \
    --disable-env-normalize-ob \
    --disable-env-normalize-rw \
    --recurrent-policy \
+   --number-of-workers $nworker
    --save-model-postfix "c7_w$nworker" \
    --log-dir "/tmp/gym/c7_w$nworker" \
    --number-of-workers $nworker \
@@ -390,6 +398,7 @@ nohup python main.py \
    --disable-env-normalize-ob \
    --disable-env-normalize-rw \
    --enable-0action-boost \
+   --number-of-workers $nworker
    --save-model-postfix "c8" \
    --log-dir "/tmp/gym/c8" \
    1>c8_out.log 2>c8_err.log &
@@ -409,7 +418,7 @@ nohup python main_visualize.py \
 used for ray parallelization.
 like **c8(c5)** with smaller num_steps and 0action_boost enabled.
 ```
-nohup python main.py \
+nohup python ray_main.py \
    --env-name "ng_Worker" \
    --algo ppo \
    --use-gae \
@@ -493,14 +502,15 @@ nohup python main.py \
    --num-processes 10 \
    --num-steps 14 \
    --num-mini-batch 14 \
-   --vis-interval 1 \
-   --log-interval 10 \
+   --vis-interval 100 \
+   --log-interval 100 \
    --ppo-epoch 10 \
    --disable-env-normalize-ob \
    --disable-env-normalize-rw \
    --enable-0action-boost \
    --recurrent-policy \
    --save-interval 10000 \
+   --number-of-workers $nworker
    --save-model-postfix "c11_w$nworker" \
    --log-dir "/tmp/gym/c11" \
    1>c11_out.log 2>c11_err.log &

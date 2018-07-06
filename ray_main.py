@@ -203,7 +203,8 @@ def run(number_of_workers, log_dir, vis_title):
 
             save_model = [save_model,
                             hasattr(envs, 'ob_rms') and envs.ob_rms or None]
-            model_name = "{}-{}-{}-{}.pt".format(args.env_name, args.algo, args.save_model_postfix, j)
+            model_name = "{}-{}-{}_w{}-{}.pt".format(args.env_name, args.algo, args.save_model_postfix,
+                                                     number_of_workers, j)
             torch.save(save_model, os.path.join(save_path, model_name))
 
         if j % args.log_interval == 0:
@@ -224,6 +225,22 @@ def run(number_of_workers, log_dir, vis_title):
                                   args.algo, args.num_frames)
             except IOError:
                 pass
+    # save final policy
+    save_path = os.path.join(args.save_dir, args.algo)
+    try:
+        os.makedirs(save_path)
+    except OSError:
+        pass
+
+    # A really ugly way to save a model to CPU
+    save_model = actor_critic
+    if args.cuda:
+        save_model = copy.deepcopy(actor_critic).cpu()
+
+    save_model = [save_model,
+                  hasattr(envs, 'ob_rms') and envs.ob_rms or None]
+    model_name = "{}-{}-{}_w{}-final.pt".format(args.env_name, args.algo, args.save_model_postfix, number_of_workers)
+    torch.save(save_model, os.path.join(save_path, model_name))
     return True
 
 

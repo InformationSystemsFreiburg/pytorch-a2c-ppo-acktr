@@ -215,11 +215,29 @@ def main():
                        value_loss, action_loss))
         if args.vis and j % args.vis_interval == 0:
             try:
+                vis_title = "{}_{}".format(args.env_name, args.save_model_postfix)
                 # Sometimes monitor doesn't properly flush the outputs
-                win = visdom_plot(viz, win, args.log_dir, args.env_name,
+                win = visdom_plot(viz, win, args.log_dir, vis_title,
                                   args.algo, args.num_frames)
             except IOError:
                 pass
+    # save final policy
+    save_path = os.path.join(args.save_dir, args.algo)
+    try:
+        os.makedirs(save_path)
+    except OSError:
+        pass
+
+    # A really ugly way to save a model to CPU
+    save_model = actor_critic
+    if args.cuda:
+        save_model = copy.deepcopy(actor_critic).cpu()
+
+    save_model = [save_model,
+                  hasattr(envs, 'ob_rms') and envs.ob_rms or None]
+    model_name = "{}-{}-{}-final.pt".format(args.env_name, args.algo, args.save_model_postfix)
+    torch.save(save_model, os.path.join(save_path, model_name))
+
 
 if __name__ == "__main__":
     main()
