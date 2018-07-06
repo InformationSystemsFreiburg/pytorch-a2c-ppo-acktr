@@ -56,6 +56,7 @@ num_updates = num_frames // num_steps // num_processes
 num_frames = num_updates * num_steps * num_processes
 ```
 
+for some example calculations sie excle file: `num_updates_calculations.xlxs`
 
 some important paths:
 
@@ -64,6 +65,21 @@ some important paths:
 * `/tmp/gym/..`: default storing location for monitoring files. used by visdom to visualize training progress
 
 # Experiment protocol
+
+## currently running
+* run_experiments_c8.sh -> cdsvmlinux
+* run_experiments_ray.sh with c9 -> cdsvmlinux
+* run_experiments_rnn.sh with c7 -> cdsvmlinux
+
+## 2018-07-05
+currently running on `cdsvmlinux`
+c9: is the same as c8 but a ray version. highly parallelized
+NON RNN and  0action_boost enabled
+```
+chmod 755 run_experiments_ray.sh
+nohup ./run_experiments_ray.sh 1>run_experiments_ray_out.log 2>run_experiments_ray_err.log &
+```
+
 
 ## 2018-07-04
 
@@ -78,7 +94,7 @@ nohup ./run_experiments_c8.sh 1>run_experiments_c8_out.log 2>run_experiments_c8_
 
 
 currently running on `cdsvmlinux`
-c9: is the same as c8 but a ray version. highly parallellized
+c9: is the same as c8 but a ray version. highly parallelized
 NON RNN and  0action_boost enabled
 ```
 chmod 755 run_experiments_ray.sh
@@ -390,6 +406,7 @@ nohup python main_visualize.py \
 ```
 
 ## c9
+used for ray parallelization.
 like **c8(c5)** with smaller num_steps and 0action_boost enabled.
 ```
 nohup python main.py \
@@ -414,7 +431,7 @@ nohup python main.py \
    1>c9_out.log 2>c9_err.log &
 ```
 
-### visualize c8
+### visualize c9
 ```
 nohup python main_visualize.py \
   --algo ppo \
@@ -422,6 +439,44 @@ nohup python main_visualize.py \
   --num-frames 1456000 \
   --log-dir "/tmp/gym/c9" \
   1>c9_vis_out.log 2>c9_vis_err.log &
+```
+
+## c10
+used for ray parallelization.
+like **c7(c5)**
+PPO-RNN
+```
+nohup python ray_main.py \
+   --env-name "ng_Worker" \
+   --algo ppo \
+   --use-gae \
+   --lr 2.5e-4 \
+   --clip-param 0.1 \
+   --value-loss-coef 1 \
+   --num-frames 1456000 \
+   --num-processes 1 \
+   --num-steps 14 \
+   --num-mini-batch 14 \
+   --vis-interval 1 \
+   --log-interval 10 \
+   --ppo-epoch 10 \
+   --disable-env-normalize-ob \
+   --disable-env-normalize-rw \
+   --enable-0action-boost \
+   --recurrent-policy \
+   --save-model-postfix "c10" \
+   --log-dir "/tmp/gym/c10" \
+   1>c10_out.log 2>c10_err.log &
+```
+
+### visualize c10
+```
+nohup python main_visualize.py \
+  --algo ppo \
+  --env-name "ng_Worker" \
+  --num-frames 1456000 \
+  --log-dir "/tmp/gym/c10" \
+  1>c10_vis_out.log 2>c10_vis_err.log &
 ```
 
 ## Enjoy configurations
@@ -442,4 +497,21 @@ nohup python enjoy.py \
    --strategy-name "PPO-NON-RNN-c5" \
    --number-of-episodes 100 \
    1>c5_out.log 2>c5_err.log &
+```
+
+### c8
+currently, results are stored in `./results/` and named `action_sequence_PPO-NON-RNN_w<>.csv` and `statistics_PPO-NON-RNN_w<>.csv`
+renaming to PPO-NON-RNN-c5 happend afterwards and is not done on the server yet.
+```
+nohup python enjoy.py \
+   --env-name "ng_Worker" \
+   --path-to-ac "./trained_models/ppo/ng_Worker-ppo-c8_w$nworker-20700.pt" \
+   --log-interval 10 \
+   --disable-env-normalize-ob \
+   --disable-env-normalize-rw \
+   --number-of-workers $nworker \
+   --path-to-results-dir "./results/" \
+   --strategy-name "PPO-NON-RNN-c8" \
+   --number-of-episodes 100 \
+   1>c8_out.log 2>c8_err.log &
 ```
