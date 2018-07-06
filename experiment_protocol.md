@@ -479,6 +479,44 @@ nohup python main_visualize.py \
   1>c10_vis_out.log 2>c10_vis_err.log &
 ```
 
+## c11
+like **c8** with RNN, 0action boost,
+```
+nohup python main.py \
+   --env-name "ng_Worker" \
+   --algo ppo \
+   --use-gae \
+   --lr 2.5e-4 \
+   --clip-param 0.1 \
+   --value-loss-coef 1 \
+   --num-frames 2912000 \
+   --num-processes 10 \
+   --num-steps 14 \
+   --num-mini-batch 14 \
+   --vis-interval 1 \
+   --log-interval 10 \
+   --ppo-epoch 10 \
+   --disable-env-normalize-ob \
+   --disable-env-normalize-rw \
+   --enable-0action-boost \
+   --recurrent-policy \
+   --save-interval 10000 \
+   --save-model-postfix "c11_w$nworker" \
+   --log-dir "/tmp/gym/c11" \
+   1>c11_out.log 2>c11_err.log &
+```
+
+### visualize c11
+```
+nohup python main_visualize.py \
+  --algo ppo \
+  --env-name "ng_Worker" \
+  --num-frames 2912000 \
+  --log-dir "/tmp/gym/c11" \
+  1>c11_vis_out.log 2>c11_vis_err.log &
+```
+
+
 ## Enjoy configurations
 config id's match the config id's we used for training.
 
@@ -497,6 +535,23 @@ nohup python enjoy.py \
    --strategy-name "PPO-NON-RNN-c5" \
    --number-of-episodes 100 \
    1>c5_out.log 2>c5_err.log &
+```
+
+
+### c7
+currently, results are stored in `./results/`
+```
+nohup python enjoy.py \
+   --env-name "ng_Worker" \
+   --path-to-ac "./trained_models/ppo/ng_Worker-ppo-c7_w$nworker-400.pt" \
+   --log-interval 10 \
+   --disable-env-normalize-ob \
+   --disable-env-normalize-rw \
+   --number-of-workers $nworker \
+   --path-to-results-dir "./results/" \
+   --strategy-name "PPO-NON-RNN-c7" \
+   --number-of-episodes 100 \
+   1>c7_out.log 2>c7_err.log &
 ```
 
 ### c8
