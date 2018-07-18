@@ -63,6 +63,149 @@ class Policy(nn.Module):
 
 
 
+class FeudalPolicy(nn.Module):
+    def __init__(self, obs_shape, action_space, recurrent_policy):
+        super(FeudalPolicy, self).__init__()
+
+        self.num_inputs = obs_shape[0]
+
+
+        if len(obs_shape) == 1:
+            self.manager = MLPBase(obs_shape[0], recurrent_policy)
+            self.worker = MLPBase(obs_shape[0], recurrent_policy)
+        else:
+            raise NotImplementedError
+
+        if action_space.__class__.__name__ == "Discrete":
+            num_outputs = action_space.n
+            self.dist = Categorical(self.worker.output_size, num_outputs)
+        elif action_space.__class__.__name__ == "Box":
+            num_outputs = action_space.shape[0]
+            self.dist = DiagGaussian(self.worker.output_size, num_outputs)
+        else:
+            raise NotImplementedError
+
+        self.state_size = self.worker.state_size
+
+        # build manager value function
+        # build manager network
+        # build worker value function
+        # build worker network
+
+    def forward(self, inputs, states, masks):
+        raise NotImplementedError
+
+    def act(self, inputs, states, masks, deterministic=False):
+        # calculate manger output
+        # calculate worker output
+        # return worker logits
+        pass
+
+    def get_value(self, inputs, states, masks, action):
+        pass
+
+    def evaluate_actions(self, inputs, states, masks, action):
+        pass
+
+    def _build_manager(self):
+        # calculate manger internal state
+        ## input is a m x d matrix received from the environment
+        ## flatten input to 1 x md vector
+        ## input.view(input.size(0), -1)
+        # calculate manager output g
+        ## dilated rnn
+        self.m_rnn = nn.LSTM(self.num_inputs, 64)
+        self.hidden_g_hat = nn.Linear(64, 10)
+
+        ## hidden g_hat
+        ## g_hat
+        ## g -> serves as input for worker
+        ## store states c and h for input and output
+        pass
+
+    def _build_worker(self):
+        # calculate w -> this requires g of the manager
+        # calculate U -> worker lstm
+        # calculate policy and sample
+        pass
+
+
+class ManagerBase(nn.Module):
+    def __init__(self, num_inputs, g_dim, use_gru):
+        super(ManagerBase, self).__init__()
+
+        init_ = lambda m: init(m,
+                               init_normc_,
+                               lambda x: nn.init.constant_(x, 0))
+
+        self.g_dim = g_dim
+        self.hidden_dim = g_dim
+
+        self.m_rnn = nn.LSTM(g_dim, g_dim)
+        self.m_rnn_hidden = self._init_hidden()
+        self.g = None
+
+        self.m_v = None
+
+        self.train()
+
+    def _init_hidden(self):
+        return (torch.zeros(1, 1, self.hidden_dim),
+                torch.zeros(1, 1, self.hidden_dim))
+
+    @property
+    def state_size(self):
+        return self.g_dim
+
+    @property
+    def output_size(self):
+        return 64
+
+    def forward(self, inputs, states, masks):
+        g_hat, self.m_rnn_hidden = self.m_rnn(inputs, self.m_rnn_hidden)
+        g_hat_data = g_hat.data
+        self.g = g_hat_data / torch.norm(g_hat_data, p=1, dim=1, keepdim=True)
+
+        return self.m_v, self.g, self.m_rnn_hidden
+
+
+class WorkerBase(nn.Module):
+    def __init__(self, num_inputs, g_dim, use_gru):
+        super(WorkerBase, self).__init__()
+
+        init_ = lambda m: init(m,
+              init_normc_,
+              lambda x: nn.init.constant_(x, 0))
+
+        self.g_dim = g_dim
+
+        self.m_rnn = nn.LSTM(g_dim, g_dim)
+        self.m_rnn_hidden = self._init_hidden()
+        self.g = None
+
+        self.m_v = None
+
+        self.train()
+
+    def _init_hidden(self):
+        return (torch.zeros(1, 1, self.hidden_dim),
+                torch.zeros(1, 1, self.hidden_dim))
+
+    @property
+    def state_size(self):
+        return self.g_dim
+
+    @property
+    def output_size(self):
+        return 64
+
+    def forward(self, inputs, states, masks):
+        g_hat, self.m_rnn_hidden = self.m_rnn(inputs, self.m_rnn_hidden)
+        g_hat_data = g_hat.data
+        self.g = g_hat_data / torch.norm(g_hat_data, p=1, dim=1, keep_dim=True)
+
+        return self.m_v, self.g, self.m_rnn_hidden
+
 # class Policy(nn.Module):
 #     def __init__(self, obs_shape, action_space, recurrent_policy):
 #         super(Policy, self).__init__()
