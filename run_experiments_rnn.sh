@@ -29,6 +29,8 @@ done
 
 echo 'HEUREKA, I am done!'
 
+# c7
+
 #       --env-name "ng_Worker" \
 #       --algo ppo \
 #       --use-gae \

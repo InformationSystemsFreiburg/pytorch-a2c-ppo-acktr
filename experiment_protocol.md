@@ -454,7 +454,7 @@ nohup python main_visualize.py \
 
 ## c10
 used for ray parallelization.
-like **c7(c5)**
+like **c7(c5)** 0action boost enabled
 PPO-RNN
 ```
 nohup python ray_main.py \
