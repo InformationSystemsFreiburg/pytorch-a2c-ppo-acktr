@@ -186,6 +186,58 @@ class WorkerMaintenanceEnv(gym.Env):
         return 'WorkerMaintenanceEnv'
 
 
+class FeudalMaintenanceEnv(gym.Env):
+    """Example of a custom env in which you have to walk down a corridor.
+    You can configure the length of the corridor via the env config."""
+
+    def __init__(self, config):
+        self.env = MaintenanceEnv(config)
+        self.config = config
+        self.n_worker = config["number_of_workers"]
+        self.action_space = Discrete(self.n_worker + 1)
+        self.observation_space = Box(
+                0,
+                np.inf,
+                shape=[config["number_of_machines"], 3],
+                dtype='float32')
+
+        self.model_expert = tf.keras.models.load_model(config["path_to_keras_expert_model"])
+        self._spec = EnvSpec("WorkerMaintenanceEnv-Feudal-{}-v0".format(self.n_worker))
+        self.ranking = 0
+
+    def reset(self):
+        obs = self.env.reset()
+        # obs, self.ranking = self._transform_obs(obs)
+        return obs
+
+    def step(self, action):
+        actions = self._map_to_env_action(action)
+        ob, reward, episode_over, stats = self.env.step(actions)
+        ob, self.ranking = self._transform_obs(ob)
+        return ob, reward, episode_over, stats
+
+    def render(self, mode='human', close=False):
+        pass
+
+    def _transform_obs(self, obs):
+        # new_obs = self._obs_to_np_array(obs)
+        new_obs = self.model_expert.predict(obs, batch_size=self.config["number_of_machines"])
+        new_obs = new_obs.reshape(new_obs.shape[0])
+        priority_ranking = np.argsort(-new_obs,axis=0)
+        return new_obs, priority_ranking
+
+    def _map_to_env_action(self, action):
+        actions = np.zeros(shape=[self.config["number_of_machines"],])
+        actions[self.ranking[:action]] = 1
+        return actions
+
+    def _obs_to_np_array(self, obs):
+        return np.vstack((obs['rul_estimation'], obs['time_since_last_maintenance'], obs['is_running'])).T
+
+    def __str__(self):
+        return 'FeudalMaintenanceEnv'
+
+
 if __name__ == '__main__':
     env = MaintenanceEnv()
     print(env.machine_park.machine_park_info_df)

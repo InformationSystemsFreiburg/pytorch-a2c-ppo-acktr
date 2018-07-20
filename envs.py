@@ -23,7 +23,7 @@ except ImportError:
     pass
 
 # source file located in gym-maintenance project
-from custom_envs.maintenance_simple_env import MaintenanceEnv, WorkerMaintenanceEnv
+from custom_envs.maintenance_simple_env import MaintenanceEnv, WorkerMaintenanceEnv, FeudalMaintenanceEnv
 
 
 def make_env(env_id, seed, rank, log_dir, add_timestep, env_config=None):
@@ -32,6 +32,8 @@ def make_env(env_id, seed, rank, log_dir, add_timestep, env_config=None):
             env = MaintenanceEnv(env_config)
         elif env_id.startswith("ng_Worker"):
             env = WorkerMaintenanceEnv(env_config)
+        elif env_id.startswith("ng_Feudal"):
+            env = FeudalMaintenanceEnv(env_config)
         elif env_id.startswith("dm"):
             _, domain, task = env_id.split('.')
             env = dm_control2gym.make(domain_name=domain, task_name=task)
