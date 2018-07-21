@@ -62,17 +62,18 @@ class Policy(nn.Module):
         return value, action_log_probs, dist_entropy, states
 
 
-
 class FeudalPolicy(nn.Module):
     def __init__(self, obs_shape, action_space, recurrent_policy):
         super(FeudalPolicy, self).__init__()
 
         self.num_inputs = obs_shape[0]
 
-
         if len(obs_shape) == 1:
-            self.manager = MLPBase(obs_shape[0], recurrent_policy)
-            self.worker = MLPBase(obs_shape[0], recurrent_policy)
+            # extract worker input size -> bad practice, change this for production! Hard code 4 because we know that
+            #  the underlaying environment returns the product of 100 machines times 4 sensor values. Deviding by 4
+            # gives us the number of machines times the stacking factor.
+            self.manager = ManagerBase(obs_shape[0], recurrent_policy)
+            self.worker = WorkerBase(obs_shape[0] / 4, recurrent_policy)
         else:
             raise NotImplementedError
 

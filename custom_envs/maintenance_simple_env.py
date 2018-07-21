@@ -198,7 +198,7 @@ class FeudalMaintenanceEnv(gym.Env):
         self.observation_space = Box(
                 0,
                 np.inf,
-                shape=[config["number_of_machines"], 3],
+                shape=[config["number_of_machines"] * 4, ],
                 dtype='float32')
 
         self.model_expert = tf.keras.models.load_model(config["path_to_keras_expert_model"])
@@ -207,7 +207,7 @@ class FeudalMaintenanceEnv(gym.Env):
 
     def reset(self):
         obs = self.env.reset()
-        # obs, self.ranking = self._transform_obs(obs)
+        obs, self.ranking = self._transform_obs(obs)
         return obs
 
     def step(self, action):
@@ -221,10 +221,13 @@ class FeudalMaintenanceEnv(gym.Env):
 
     def _transform_obs(self, obs):
         # new_obs = self._obs_to_np_array(obs)
-        new_obs = self.model_expert.predict(obs, batch_size=self.config["number_of_machines"])
-        new_obs = new_obs.reshape(new_obs.shape[0])
-        priority_ranking = np.argsort(-new_obs,axis=0)
-        return new_obs, priority_ranking
+        new_obs = np.zeros((obs.shape[0], obs.shape[1] +1), dtype='float32')
+        new_obs[:, :-1] = obs
+        probs = self.model_expert.predict(obs, batch_size=self.config["number_of_machines"])
+        new_obs[:, -1] = probs
+        ranking_probs = probs.reshape(probs.shape[0])
+        priority_ranking = np.argsort(-ranking_probs, axis=0)
+        return new_obs.flatten(), priority_ranking
 
     def _map_to_env_action(self, action):
         actions = np.zeros(shape=[self.config["number_of_machines"],])
