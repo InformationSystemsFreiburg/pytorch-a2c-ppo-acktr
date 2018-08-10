@@ -15,7 +15,7 @@ from baselines.common.vec_env.dummy_vec_env import DummyVecEnv
 from baselines.common.vec_env.subproc_vec_env import SubprocVecEnv
 from baselines.common.vec_env.vec_normalize import VecNormalize
 from envs import make_env
-from model import Policy
+from model import Policy, FeudalPolicy
 from storage import RolloutStorage
 from visualize import visdom_plot
 
@@ -86,7 +86,10 @@ def main():
     print("#######")
     print("action space.n : {}".format(envs.action_space.n))
     print("#######")
-    actor_critic = Policy(obs_shape, envs.action_space, args.recurrent_policy)
+    if args.env_name == 'ng_Feudal':
+        actor_critic = FeudalPolicy(obs_shape, envs.action_space, args.recurrent_policy)
+    else:
+        actor_critic = Policy(obs_shape, envs.action_space, args.recurrent_policy)
 
     if envs.action_space.__class__.__name__ == "Discrete":
         action_shape = 1
